@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: clientes
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: eurekaserver-production-489e.up.railway.app
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}					
