@@ -26,7 +26,7 @@ public class ClienteController {
 
 	private final ClienteService clienteService;
 	
-	@GetMapping()
+	@GetMapping("/")
 	@Operation(description = "Teste de funcionamento do controller.")
 	public String getMethodName() {
 		return new String("Teste de controller de clientes executado com sucesso!");
