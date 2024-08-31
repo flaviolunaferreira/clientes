@@ -5,12 +5,13 @@ eureka:
     service-url:
       defaultZone: https://eurekaserver-production-adff.up.railway.app/eureka/
   instance:
-    preferIpAddress: true
-    hostname: ${HOSTNAME:localhost}
+    preferIpAddress: false
+    hostname: ${HOSTNAME:clientes-production-9948.up.railway.app}
 
 spring:
   application:
     name: ${APP_NAME:clientes}
 
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8080}  # Use ${PORT} se a Railway estiver fornecendo uma porta dinâmica
+
