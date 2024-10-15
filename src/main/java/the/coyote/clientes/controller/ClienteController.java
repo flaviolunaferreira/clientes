@@ -41,6 +41,7 @@ public class ClienteController {
 	}
 	
 	@PostMapping("/")
+	@Operation(summary = "Cadastro de clientes")
 	public ResponseEntity<ResponseCadastroClienteDTO> salvarCliente(@RequestBody CadastroClienteDTO cadastroClienteDTO) {
 		return ResponseEntity.ok().body(clienteService.salvarCliente(cadastroClienteDTO));
 	}
