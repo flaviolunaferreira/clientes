@@ -1,6 +1,11 @@
 spring:
   application:
     name: clientes
+  data:
+    mongodb:
+      host: localhost  
+      port: 27017      # Porta padrão do MongoDB
+      database: clientesdb  # Nome do banco de dados no MongoDB
 
 server:
   port: 8080

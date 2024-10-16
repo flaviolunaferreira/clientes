@@ -10,7 +10,7 @@ import the.coyote.clientes.model.entity.ClientesEntity;
 @NoArgsConstructor
 public class ListaBasicaClientesDTO {
 	
-	private Long id;
+	private String id;
 	private String nome;
 	private LocalDateTime dataDoCadastro;
 	

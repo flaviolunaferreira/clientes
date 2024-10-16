@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
+import the.coyote.clientes.exception.DuplicateValue;
 import the.coyote.clientes.model.dto.CadastroClienteDTO;
 import the.coyote.clientes.model.dto.ListaBasicaClientesDTO;
 import the.coyote.clientes.model.dto.ResponseCadastroClienteDTO;
@@ -17,6 +17,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -41,8 +42,9 @@ public class ClienteController {
 	}
 	
 	@PostMapping("/")
-	@Operation(summary = "Cadastro de clientes")
-	public ResponseEntity<ResponseCadastroClienteDTO> salvarCliente(@RequestBody CadastroClienteDTO cadastroClienteDTO) {
+	@Operation(summary = "Cadastro de clientes") 
+	public ResponseEntity<ResponseCadastroClienteDTO> salvarCliente(@RequestBody CadastroClienteDTO cadastroClienteDTO) throws DuplicateValue {
+
 		return ResponseEntity.ok().body(clienteService.salvarCliente(cadastroClienteDTO));
 	}
 

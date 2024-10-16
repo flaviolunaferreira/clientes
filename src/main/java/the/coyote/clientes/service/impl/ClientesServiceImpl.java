@@ -3,12 +3,12 @@ package the.coyote.clientes.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import the.coyote.clientes.exception.DuplicateValue;
 import the.coyote.clientes.model.dto.CadastroClienteDTO;
 import the.coyote.clientes.model.dto.ListaBasicaClientesDTO;
 import the.coyote.clientes.model.dto.ResponseCadastroClienteDTO;
@@ -36,12 +36,12 @@ public class ClientesServiceImpl implements ClienteService{
 	}
 
 	@Override
-	public ResponseCadastroClienteDTO salvarCliente(CadastroClienteDTO cadastroClienteDTO) {
+	public ResponseCadastroClienteDTO salvarCliente(CadastroClienteDTO cadastroClienteDTO) throws DuplicateValue {
 		
 		List<ClientesEntity> cliente = clientesRepository.findByNomeContainingIgnoreCase(cadastroClienteDTO.getNome());
-		
-		if (!cliente.isEmpty()) throw(new DuplicateKeyException("Sinto muito, já tenho um cliente com esse nome. -> " + cadastroClienteDTO.getNome()));
-		
+
+		if (!cliente.isEmpty()) throw(new DuplicateValue("Sinto muito, já tenho um cliente com esse nome. -> " + cadastroClienteDTO.getNome()));
+
 		return new ResponseCadastroClienteDTO(clientesRepository.save(cadastroClienteDTO.novoCliente()));
 	}
 	

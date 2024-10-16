@@ -1,43 +1,24 @@
 package the.coyote.clientes.model.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
 @NoArgsConstructor
-public class ClientesEntity {
+@AllArgsConstructor
+@Document(collection = "clientes")
+@EqualsAndHashCode(callSuper=false)
+public class ClientesEntity extends BasicEntity {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column
 	private String nome;
-	
-	@CreatedBy
-	private String createdBy;
-	
-	@CreatedDate
-	private LocalDateTime createdDate;
-	
-	@LastModifiedBy
-	private String LastModifiedBy;
-	
-	@LastModifiedDate
-	private LocalDateTime lastModifieldDate;
+
+	private LocalDate dataNascimento;
 	
 	public ClientesEntity(String nome) {
 		this.nome = nome;
