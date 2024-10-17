@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import the.coyote.clientes.exception.DuplicateValue;
-import the.coyote.clientes.model.dto.CadastroClienteDTO;
-import the.coyote.clientes.model.dto.ListaBasicaClientesDTO;
-import the.coyote.clientes.model.dto.ResponseCadastroClienteDTO;
+import the.coyote.clientes.model.dto.cliente.CadastroClienteDTO;
+import the.coyote.clientes.model.dto.cliente.ListaBasicaClientesDTO;
+import the.coyote.clientes.model.dto.cliente.ResponseCadastroClienteDTO;
 import the.coyote.clientes.model.entity.ClientesEntity;
 import the.coyote.clientes.model.repository.ClientesRepository;
 import the.coyote.clientes.service.ClienteService;
@@ -25,8 +25,8 @@ public class ClientesServiceImpl implements ClienteService{
 	@Override
 	public List<ListaBasicaClientesDTO> listarTodosClientes(Integer pagina, Integer quantidade) {
 
-	      int paginaFinal = (pagina != null) ? pagina : 0;
-	        int quantidadeFinal = (quantidade != null) ? quantidade : 50;
+	    int paginaFinal = (pagina != null) ? pagina : 0;
+	    int quantidadeFinal = (quantidade != null) ? quantidade : 50;
 
 	    PageRequest pageable = PageRequest.of(paginaFinal, quantidadeFinal);
 	    Page<ClientesEntity> lista = clientesRepository.findAll(pageable);

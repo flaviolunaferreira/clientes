@@ -1,17 +1,16 @@
 package the.coyote.clientes.model.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "clientes")
 @EqualsAndHashCode(callSuper=false)
 public class ClientesEntity extends BasicEntity {
@@ -20,8 +19,11 @@ public class ClientesEntity extends BasicEntity {
 
 	private LocalDate dataNascimento;
 	
-	public ClientesEntity(String nome) {
+    private List<DocumentoEntity> documentos; // Lista de documentos associados ao cliente
+
+	public ClientesEntity(String nome, LocalDate dataNascimento) {
 		this.nome = nome;
+		this.dataNascimento = dataNascimento;
 	}
 	
 }

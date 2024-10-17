@@ -1,4 +1,6 @@
-package the.coyote.clientes.model.dto;
+package the.coyote.clientes.model.dto.cliente;
+
+import java.time.LocalDate;
 
 import lombok.Data;
 import the.coyote.clientes.model.entity.ClientesEntity;
@@ -7,9 +9,10 @@ import the.coyote.clientes.model.entity.ClientesEntity;
 public class CadastroClienteDTO {
 
 	private String nome;
+	private LocalDate dataNascimento;
 
 	public ClientesEntity novoCliente() {
-		return new ClientesEntity(nome);
+		return new ClientesEntity(nome, dataNascimento);
 	}
 	
 }

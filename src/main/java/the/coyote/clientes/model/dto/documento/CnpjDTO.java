@@ -1,0 +1,25 @@
+package the.coyote.clientes.model.dto.documento;
+
+import java.util.Collections;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import the.coyote.clientes.model.entity.DocumentoEntity;
+import the.coyote.clientes.model.enumeration.TipoDocumento;
+
+
+@Data
+@NoArgsConstructor
+public class CnpjDTO implements DocumentDto{
+
+    private String numero;
+
+    @Override
+    public DocumentoEntity toEntity() {
+        DocumentoEntity documentoEntity = new DocumentoEntity();
+        documentoEntity.setTipoDocumento(TipoDocumento.CNPJ);
+        documentoEntity.setDadosDocumento(Collections.singletonMap("Número", numero));
+        return documentoEntity;
+    }
+
+}

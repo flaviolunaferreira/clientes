@@ -40,4 +40,14 @@ public class ExceptionController {
 		);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(error);
 	}
+
+	@ExceptionHandler(InternalServerErro.class)
+	public ResponseEntity<StandardError> internalServerErrorExcepition(InternalServerErro e, ServletRequest request) {
+		StandardError error = new StandardError(
+				System.currentTimeMillis(),
+				HttpStatus.INTERNAL_SERVER_ERROR.value(),
+				e.getMessage()
+		);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(error);
+	}
 }
