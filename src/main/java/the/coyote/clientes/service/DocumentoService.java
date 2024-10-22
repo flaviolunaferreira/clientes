@@ -1,14 +1,15 @@
 package the.coyote.clientes.service;
 
-import java.util.Map;
+import the.coyote.clientes.model.entity.DocumentoEntity;
+import java.util.List;
 
-import org.springframework.stereotype.Service;
-
-import the.coyote.clientes.model.dto.cliente.ResponseCadastroClienteDTO;
-
-@Service
 public interface DocumentoService {
-
-    ResponseCadastroClienteDTO adicionarDocumento(String clienteId, Object documento);
-    Object processarDocumento(Class<?> dtoClass, Map<String, String> dadosDocumento);
+    DocumentoEntity salvarDocumento(DocumentoEntity documento);
+    DocumentoEntity atualizarDocumento(String id, DocumentoEntity documento);
+    void excluirDocumento(String id);
+    DocumentoEntity buscarDocumentoPorId(String id);
+    List<DocumentoEntity> listarDocumentos();
+    
+    void verificarDocumentoExistente(DocumentoEntity documento);
+    void verificarDuplicidadeEmClientes(DocumentoEntity documento);
 }

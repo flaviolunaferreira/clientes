@@ -1,54 +1,74 @@
 package the.coyote.clientes.service.impl;
 
-import java.util.Map;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.RequiredArgsConstructor;
-import the.coyote.clientes.exception.NotFound;
-import the.coyote.clientes.model.dto.cliente.ResponseCadastroClienteDTO;
-import the.coyote.clientes.model.dto.documento.DocumentDto;
-import the.coyote.clientes.model.entity.ClientesEntity;
 import the.coyote.clientes.model.entity.DocumentoEntity;
-import the.coyote.clientes.model.repository.ClientesRepository;
+import the.coyote.clientes.model.repository.DocumentoRepository;
 import the.coyote.clientes.service.DocumentoService;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
-@RequiredArgsConstructor
 public class DocumentoServiceImpl implements DocumentoService {
 
-    private final ClientesRepository clienteRepository;
-
-@Override
-public ResponseCadastroClienteDTO adicionarDocumento(String clienteId, Object documento) {
-    ClientesEntity cliente = buscarClientePorId(clienteId);
-
-    if (documento instanceof DocumentoEntity) {
-        cliente.getDocumentos().add((DocumentoEntity) documento);
-    } else if (documento instanceof DocumentDto) {
-        cliente.getDocumentos().add(((DocumentDto) documento).toEntity());
-    } else {
-        throw new IllegalArgumentException("Tipo de documento inválido");
-    }
-
-    clienteRepository.save(cliente);  // Salva o cliente atualizado no banco de dados
-    return new ResponseCadastroClienteDTO(cliente);  // Retorna o DTO com os dados atualizados
-}
-
+    @Autowired
+    private DocumentoRepository documentoRepository;
 
     @Override
-    public Object processarDocumento(Class<?> dtoClass, Map<String, String> dadosDocumento) {
-        // Usar uma biblioteca como Jackson ou Gson para converter o Map<String, String> para o DTO apropriado
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(dadosDocumento, dtoClass);
+    public DocumentoEntity salvarDocumento(DocumentoEntity documento) {
+        verificarDocumentoExistente(documento);
+        return documentoRepository.save(documento);
     }
 
-
-
-    private ClientesEntity buscarClientePorId(String clienteId) throws NotFound {
-        return clienteRepository.findById(clienteId).orElseThrow(() -> new NotFound("Sinto muito!!! não encontrei o cliete com o id :" + clienteId));
+    @Override
+    public DocumentoEntity atualizarDocumento(String id, DocumentoEntity documento) {
+        DocumentoEntity documentoExistente = buscarDocumentoPorId(id);
+        verificarDocumentoExistente(documento);
+        documentoExistente.setTipoDocumento(documento.getTipoDocumento());
+        documentoExistente.setDadosDocumento(documento.getDadosDocumento());
+        return documentoRepository.save(documentoExistente);
     }
 
+    @Override
+    public void excluirDocumento(String id) {
+        documentoRepository.deleteById(id);
+    }
+
+    @Override
+    public DocumentoEntity buscarDocumentoPorId(String id) {
+        return documentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Documento não encontrado."));
+    }
+
+    @Override
+    public List<DocumentoEntity> listarDocumentos() {
+        return documentoRepository.findAll();
+    }
+
+    @Override
+    public void verificarDocumentoExistente(DocumentoEntity documento) {
+        String tipo = documento.getTipoDocumento().name();
+        String numeroDocumento = documento.getDadosDocumento().get("Número");
+
+        Optional<DocumentoEntity> documentoExistente = documentoRepository
+            .findByTipoDocumentoAndDadosDocumentoContains(tipo, numeroDocumento);
+
+        if (documentoExistente.isPresent()) {
+            throw new RuntimeException("Este tipo de documento já está cadastrado para este cliente.");
+        }
+
+        // Verificação assíncrona em segundo plano
+        verificarDuplicidadeEmClientes(documento);
+    }
+
+    @Async
+    @Override
+    public void verificarDuplicidadeEmClientes(DocumentoEntity documento) {
+        // Simulação de pesquisa em outros cadastros de clientes
+        // Aqui, você incluiria a lógica de busca em toda a base de clientes
+        // e verificaria se o mesmo tipo de documento e número existem em outros registros.
+        // Caso existam, você emitiria uma mensagem de alerta para o front-end.
+    }
 }
